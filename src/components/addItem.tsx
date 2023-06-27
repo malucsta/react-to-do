@@ -1,16 +1,16 @@
-import { useRef } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import { TextField, Button } from "@mui/material";
+import { key } from "localforage";
 
 interface Props {
   error: string;
   name: string;
-  onAdd: () => void;
+  onAdd: (data: string) => void;
   onTextChange: (name: string) => void;
 }
 
 export const AddItem = ({ error, name, onTextChange, onAdd }: Props) => {
   const hasError = error.length > 0;
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -36,7 +36,7 @@ export const AddItem = ({ error, name, onTextChange, onAdd }: Props) => {
         disabled={name.length === 0 || hasError}
         style={{ borderRadius: 5, marginLeft: "2%" }}
         onClick={() => {
-          onAdd();
+          onAdd(name);
           inputRef.current?.focus();
         }}
       >

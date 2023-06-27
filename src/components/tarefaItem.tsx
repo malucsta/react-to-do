@@ -1,5 +1,6 @@
 import { Checkbox, Paper, IconButton, Typography } from "@mui/material";
 import { Tarefa } from "../domain/model/tarefa";
+import React from "react";
 
 interface Props {
   tarefa: Tarefa;

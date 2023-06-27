@@ -3,6 +3,7 @@ import { TarefaItem } from "./tarefaItem";
 
 import { AllActions } from "../domain/reducers";
 import { Tarefa, makeSearchByName } from "../domain/model/tarefa";
+import React from "react";
 
 interface Props {
   tarefas: Tarefa[];
@@ -24,6 +25,19 @@ export const ListaTarefas = ({
   };
 
   const toggleDone = (id: string) => {
+    const data = JSON.parse(localStorage.getItem('data')!);
+    
+    const updatedData = data.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          done: !item.done // Toggle the done field
+        };
+      }
+      return item;
+    });
+
+    localStorage.setItem('data', JSON.stringify(updatedData));
     dispatch({ type: "TOGGLE", payload: { id } });
   };
 

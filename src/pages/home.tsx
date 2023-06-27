@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
+import { formatDistance, format } from "date-fns";
 
 import {
   AllActions,
@@ -11,6 +12,9 @@ import { MyAppBar } from "../components/appBar";
 import { AddItem } from "../components/addItem";
 import { ListaTarefas } from "../components/tarefaLista";
 import { Search } from "../components/search";
+import { SetStateAction, useEffect, useState } from "react";
+import { Tarefa } from "../domain/model/tarefa";
+import React from "react";
 
 interface Props {
   appState: TarefasState;
@@ -19,13 +23,51 @@ interface Props {
 
 export function Home({ appState, dispatch }: Props) {
   const navigate = useNavigate();
+  const [data, setData] = useState<Tarefa[]>([]);
+  
+  // const handleDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const prevData = data;
+  //   setData(prevData.concat(event.target.value));
+  // };
+  
+  useEffect(() => {
+    if(data.length > 0) {
+      console.log("Data now is: ", data)
+      console.log("Saving data as: ", data);
+      localStorage.setItem('data', JSON.stringify(data));
+      console.log("Tarefas: ", appState.tarefas.length);
+      appState.tarefas = data;
+    }
+    else{
+      console.log("Data is null or undefined");
+    }
+  }, [data]);
+
+  useEffect(() => {
+    //localStorage.setItem('data', '');
+    const savedData = localStorage.getItem('data');
+    if (savedData) {
+      console.log("Saved data is: ", savedData);
+      setData(JSON.parse(savedData));
+      appState.tarefas = data;
+    }
+    console.log("Local storage is: ", localStorage.getItem('data'));
+  }, []);
 
   const onTextChange = (name: string) => {
     dispatch({ type: TarefaActionsEnum.write, payload: { name } });
   };
 
-  const onAdd = () => {
-    dispatch({ type: TarefaActionsEnum.add, payload: {} });
+  const onAdd = (task: string) => {
+    const tarefa: Tarefa = {
+      id: appState.tarefas.length.toString(),
+      name: task,
+      done: false,
+      createdAt: new Date(),
+    };
+    console.log("Tarefa criada no on Add: ", tarefa)
+    setData(data.concat(tarefa));
+    dispatch({ type: TarefaActionsEnum.add, payload: {task} });
   };
 
   const goToTarefa = (id: string) => {

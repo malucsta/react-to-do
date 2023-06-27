@@ -7,6 +7,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { MyAppBar } from "../components/appBar";
 import { useNavigate, useParams } from "react-router-dom";
 import { TarefaNotFound } from "../components/tarefaNotFound";
+import React from "react";
 
 interface Props {
   appState: TarefasState;
@@ -26,6 +27,9 @@ export const TarefaPage = ({ appState }: Props) => {
 
   return (
     <>
+      {console.log("Tarefa: ", tarefa)}
+      {console.log("Tarefa date: ", tarefa.createdAt)}
+      
       <MyAppBar>
         <IconButton
           size="large"
@@ -79,15 +83,16 @@ export const TarefaPage = ({ appState }: Props) => {
             </Typography>
             <Typography variant="body1">
               Data de Criação:
-              {format(tarefa.createdAt, " eeee, dd/MM/yyyy HH:mm", {
+              {tarefa.createdAt.toString()}
+              {/* {format(tarefa.createdAt, " eeee, dd/MM/yyyy HH:mm", {
                 locale: ptBR,
-              })}
+              })} */}
             </Typography>
             <Typography variant="body1">
-              {formatDistance(tarefa.createdAt, new Date(), {
+              {/* {formatDistance(tarefa.createdAt, new Date(), {
                 addSuffix: true,
                 locale: ptBR,
-              })}
+              })} */}
             </Typography>
           </section>
         </div>
